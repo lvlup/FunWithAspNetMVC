@@ -1,4 +1,6 @@
-﻿@model IEnumerable<FunWithAspnetMVC.Models.Book>
+﻿@model PagedList.IPagedList<FunWithAspnetMVC.Models.Book>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Home Page";
 }
@@ -12,7 +14,7 @@
 <div class="row">
     <div class="col-md-4">
         <h2>Поиск</h2>
-       @using (Html.BeginForm())
+       @using (Html.BeginForm(FormMethod.Get))
        {
            <p>
                Введите: @Html.TextBox("SearchString")
@@ -25,18 +27,18 @@
         <table class="table">
             <tr>
                 <th >
-                   Название книги
+                    Название книги
                 </th>
                 <th>
-                   Жанр книги
+                    Жанр книги
                 </th>
                 <th>
                     Имя автора книги
                 </th>
                 <th>
-                   Фамилия автора книги
+                    Фамилия автора книги
                 </th>
-            
+
             </tr>
             @if (Model != null)
             {
@@ -60,5 +62,18 @@
                 }
             }
         </table>
+        <br/>
+
+        @if (Model != null)
+        {
+            <div>
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount;
+
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+        }
+
+       
+
     </div>
 </div>
