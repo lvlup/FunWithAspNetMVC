@@ -12,8 +12,16 @@ namespace FunWithAspnetMVC.Controllers
     {
         private LibraryContext db = new LibraryContext();
 
-        public ViewResult Index(string currentFilter,string searchString, int? page)
+        public ViewResult Index(string sortOrder,string currentFilter,string searchString, int? page)
         {
+           ViewBag.CurrentSort = sortOrder;
+
+           ViewBag.NameSortParm =  "name_asc";
+           ViewBag.GenreSortParm =  "genre_asc";
+           ViewBag.WriterNameSortParm =  "writername_asc";
+           ViewBag.WriterLastNameSortParm = "writerlastame_asc";
+
+
             if (searchString != null)
             {
                 page = 1;
@@ -32,10 +40,50 @@ namespace FunWithAspnetMVC.Controllers
                 var searchingBooks = db.Books.Where(b => b.Genre.Contains(searchString)
                                                          || b.Name.Contains(searchString)
                                                          || b.Writer.FirstName.Contains(searchString)
-                                                         || b.Writer.LastName.Contains(searchString)).OrderBy(b=>b.Name);
+                                                         || b.Writer.LastName.Contains(searchString));
+
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        searchingBooks = searchingBooks.OrderByDescending(b=>b.Name);
+                        ViewBag.NameSortParm = "name_asc";
+                        break;
+                    case "name_asc":
+                        searchingBooks = searchingBooks.OrderBy(b => b.Name);
+                        ViewBag.NameSortParm = "name_desc";
+                        break;
+                    case "genre_desc":
+                        searchingBooks = searchingBooks.OrderByDescending(b => b.Genre);
+                        ViewBag.GenreSortParm = "genre_asc";
+                        break;
+                    case "genre_asc":
+                        searchingBooks = searchingBooks.OrderBy(b => b.Genre);
+                        ViewBag.GenreSortParm = "genre_desc";
+                        break;
+                    case "writername_desc":
+                        searchingBooks = searchingBooks.OrderByDescending(b => b.Writer.FirstName);
+                        ViewBag.WriterNameSortParm = "writername_asc";
+                        break;
+                    case "writername_asc":
+                        searchingBooks = searchingBooks.OrderBy(b => b.Writer.FirstName);
+                        ViewBag.WriterNameSortParm = "writername_desc";
+                        break;
+                    case "writerlastame_desc":
+                        searchingBooks = searchingBooks.OrderByDescending(b => b.Writer.LastName);
+                        ViewBag.WriterLastNameSortParm = "writerlastame_asc";
+                        break;
+                    case "writerlastame_asc":
+                        searchingBooks = searchingBooks.OrderBy(b => b.Writer.LastName);
+                        ViewBag.WriterLastNameSortParm = "writerlastame_desc";
+                        break;
+                    default:
+                        searchingBooks = searchingBooks.OrderBy(b => b.Name);
+                        ViewBag.NameSortParm = "name_desc";
+                        break;
+                }
 
                 int pageSize = 2;
-                int pageNumber = (int)page;
+                int pageNumber = page ?? 1;
 
 
                 return View(searchingBooks.ToPagedList(pageNumber,pageSize));
