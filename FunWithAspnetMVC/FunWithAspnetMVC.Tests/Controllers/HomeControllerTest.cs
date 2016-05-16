@@ -37,5 +37,19 @@ namespace FunWithAspnetMVC.Tests.Controllers
             // Assert
             Assert.IsNotNull(result);
         }
+
+
+        [TestMethod]
+        public void Index_SearchStringRoman_ResultNotNull()
+        {
+            // Arrange
+            HomeController controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.Index(null, null, "Роман", null) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
     }
 }
