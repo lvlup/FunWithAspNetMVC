@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FunWithAspnetMVC;
 using FunWithAspnetMVC.Controllers;
+using FunWithAspnetMVC.Models;
+using PagedList;
 
 namespace FunWithAspnetMVC.Tests.Controllers
 {
@@ -40,7 +39,21 @@ namespace FunWithAspnetMVC.Tests.Controllers
 
 
         [TestMethod]
-        public void Index_SearchStringRoman_ResultNotNull()
+        public void Index_SearchStringNovel_ResultNotNull()
+        {
+            // Arrange
+            HomeController controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.Index(null, null, "Роман", null);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+
+        [TestMethod]
+        public void Index_SearchStringNovel_ModelNotNull()
         {
             // Arrange
             HomeController controller = new HomeController();
@@ -49,7 +62,8 @@ namespace FunWithAspnetMVC.Tests.Controllers
             ViewResult result = controller.Index(null, null, "Роман", null) as ViewResult;
 
             // Assert
-            Assert.IsNotNull(result);
+            var model = result.Model as PagedList<Book>;
+            Assert.IsNotNull(model);
         }
     }
 }

@@ -85,8 +85,8 @@ namespace FunWithAspnetMVC.Controllers
                 int pageSize = 2;
                 int pageNumber = page ?? 1;
 
-
-                return View(searchingBooks.ToPagedList(pageNumber,pageSize));
+                var temp = searchingBooks.ToPagedList(pageNumber, pageSize);
+                return View(temp);
             }
 
             return View();
