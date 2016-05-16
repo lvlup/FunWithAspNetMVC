@@ -10,7 +10,18 @@ namespace FunWithAspnetMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private LibraryContext db = new LibraryContext();
+        private LibraryContext db ;
+
+
+        public HomeController()
+        {
+            db = new LibraryContext();
+        }
+
+        public HomeController(LibraryContext libraryContext)
+        {
+            db = libraryContext;
+        }
 
         public ViewResult Index(string sortOrder,string currentFilter,string searchString, int? page)
         {

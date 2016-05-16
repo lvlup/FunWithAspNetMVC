@@ -8,10 +8,11 @@ using FunWithAspnetMVC.Models;
 
 namespace FunWithAspnetMVC.DAL
 {
-   public class LibraryContext : DbContext
+
+    public class LibraryContext : DbContext
     {
-       public DbSet<Writer> Writers { get; set; }
-       public DbSet<Book> Books { get; set; }
+       public virtual IDbSet<Writer> Writers { get; set; }
+       public virtual IDbSet<Book> Books { get; set; }
 
        public LibraryContext() : base("LibraryContext")
        {
