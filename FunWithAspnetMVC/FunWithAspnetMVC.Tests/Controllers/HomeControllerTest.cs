@@ -99,8 +99,9 @@ namespace FunWithAspnetMVC.Tests.Controllers
             ViewResult result = controller.Index(null, null, "Роман", null);
 
             // Assert
-            var model = (PagedList<Book>) result.Model;
-            Assert.IsTrue(model.Count == 1);
+            var resultOfSearch = (PagedList<Book>) result.Model;
+            Assert.IsTrue(resultOfSearch.Count == 1);
+            Assert.IsTrue(resultOfSearch.First().Genre == "Роман");
         }
     }
 }
